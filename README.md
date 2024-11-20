@@ -35,7 +35,7 @@ Each project is a basic Cargo project with no external dependencies.
 - Clone your forked repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/AdventOfCode_WIR.git
+git clone https://github.com/CarolineMorton/AdventOfCode_WIR.git
 cd AdventOfCode_WIR
 ```
 
