@@ -96,9 +96,9 @@ Stay tuned for information about prizes for outstanding solutions!
 
 ## Need Help?
 
-- Join our community discussions [Link to community platform]
+- Join our community discussions [https://www.linkedin.com/groups/13108731/]
 - Check out the [Rust Documentation](https://doc.rust-lang.org/book/)
-- Visit the [Advent of Code subreddit](https://www.reddit.com/r/adventofcode/)
+- Visit the [Advent of Code website](https://www.reddit.com/r/adventofcode/](https://adventofcode.com/2024))
 
 ---
 
