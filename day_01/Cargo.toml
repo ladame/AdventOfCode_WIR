@@ -3,4 +3,9 @@ name = "day_01"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "day_01_lib"
+path = "src/lib.rs"
+
 [dependencies]
+tempfile = "3.5"
