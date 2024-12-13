@@ -1,11 +1,9 @@
 
 use day_01_lib::process_input::{split_data, calculate_distance};
 fn main() {
-    // location = [chief_office, id1, id2,....]
-    // group1 = [3,4,2,1,3,3];
-    // group2 = [4,3,5,3,9,3];
-    // pair = [(1,3), (2,4), (3,5), (4,9)];
-    // distance = 2+2+2+5=11;
+    // group1 = [3,4,2,1,3,3];--> 1,2,3,3,3,4
+    // group2 = [4,3,5,3,9,3];--> 3,3,3,4,5,9
+    // distance = 2+1+1+2+5=11;
     println!("Welcome to Day 1!");
 
     // Make list of group 1 and group 2
@@ -20,4 +18,3 @@ fn main() {
     }
 
 }
-

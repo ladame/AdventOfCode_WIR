@@ -22,8 +22,8 @@ fn test_split_data() {
     println!("Actual left_numbers: {:?}", left_numbers);
     println!("Actual right_numbers: {:?}", right_numbers);
 
-    assert_eq!(left_numbers, vec![1,2,3,4]);
-    assert_eq!(right_numbers, vec![3,4,5,9]);
+    assert_eq!(left_numbers, vec![1,2,3,3,3,4]);
+    assert_eq!(right_numbers, vec![3,3,3,4,5,9]);
 }
 
 #[test]
@@ -31,8 +31,8 @@ fn test_split_data_invalid() {
     let (dir_temp, file_path) = create_test_file("3 4\ninvalid 3\n2 5\n1 3\n3 9\n3 3");
     let (left_numbers, right_numbers) = split_data(&file_path).expect("Failed to split data");
 
-    assert_eq!(left_numbers, vec![1, 2, 3]);
-    assert_eq!(right_numbers, vec![3, 4, 5, 9]);
+    assert_eq!(left_numbers, vec![1, 2, 3, 3, 3]);
+    assert_eq!(right_numbers, vec![3, 3, 4, 5, 9]);
 }
 
 #[test]
@@ -40,8 +40,8 @@ fn test_split_data_negative() {
     let (dir_temp, file_path)= create_test_file("3 4\n4 3\n2 -5\n1 3\n3 9\n3 3");
     let (left_numbers, right_numbers) = split_data(&file_path).expect("Failed to split data");
 
-    assert_eq!(left_numbers, vec![1, 2, 3, 4]);
-    assert_eq!(right_numbers, vec![-5, 3, 4, 9]);
+    assert_eq!(left_numbers, vec![1, 2, 3, 3, 3, 4]);
+    assert_eq!(right_numbers, vec![-5, 3, 3, 3, 4, 9]);
 }
 
 #[test]
