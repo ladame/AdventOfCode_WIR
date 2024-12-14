@@ -1,54 +1,46 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader, Result};
-use std::collections::HashMap;
-pub fn split_data(file_path: &str) -> Result<(Vec<i32>,Vec<i32>, HashMap<i32,i32>)> {
-    let mut left_data: Vec<i32> = Vec::new();
-    let mut right_data: Vec<i32> = Vec::new();
-    let mut similarity_scores: HashMap<i32, i32> = HashMap::new();
 
-    let file: File = File::open(file_path)?;
-    let read_file: BufReader<File> = BufReader::new(file);
-
-    for line in read_file.lines() {
-        let line: String = line?;
-        let pair: Vec<&str> = line.split_whitespace().collect();
-
-        if pair.len() == 2{
-            if let(Ok(left), Ok(right)) = (pair[0].parse::<i32>(), pair[1].parse::<i32>()){
-                left_data.push(left);
-                right_data.push(right);
-                similarity_scores.entry(left).or_insert(0);
-            }else{
-                eprintln!("The pair data isn't integer: '{}'", line);
-            }
-        }else{
-            eprintln!("The data isn't a pair: '{}'", line);
+pub fn read_reports(file_path: &str) -> Result<i32>{
+    let file: File = File::open(file_path).expect("Failed to open file");
+    let reader: BufReader<File> = BufReader::new(file);
+    let mut valid_reports: i32 = 0;
+    for line in reader.lines(){
+        let report: Vec<i32> = line.unwrap().split_whitespace().map(|x| x.parse().unwrap()).collect();
+        if check_report(&report){
+            valid_reports += 1;
         }
     }
-    left_data.sort();
-    right_data.sort();
-    calculate_similarity_score(&mut similarity_scores, &right_data);
-    Ok((left_data, right_data, similarity_scores))
+    Ok(valid_reports)
 }
+pub fn check_report(line: &[i32]) -> bool{
+    let initial_index: usize = 0;
+    let max_diff: i32 = 3;
 
-pub fn calculate_distance(left_numbers: Vec<i32>, right_numbers: Vec<i32>) -> i32{
-    let mut distance: i32 = 0;
-    for i in 0..left_numbers.len(){
-        distance += (left_numbers[i] - right_numbers[i]).abs();
+    
+    if line[initial_index] > line[initial_index+1]{
+        return check_decrease(&line, max_diff);
+    }else if line[initial_index] < line[initial_index+1]{
+        return check_increase(&line, max_diff);
+    }else{
+        return false;
     }
-    distance
 }
 
-pub fn calculate_similarity_score(similarity_score: &mut HashMap<i32, i32>, right_data: &[i32]){
-    for &right in right_data{
-        if let Some(value) = similarity_score.get_mut(&right){
-            *value += 1;
+pub fn check_decrease(line: &[i32], max_diff: i32) -> bool {
+    for i in 0..(line.len()-1){
+        if line[i] - line[i+1] > max_diff || line[i] - line[i+1] <= 0{
+            return false;
         }
     }
+    return true
 }
 
-pub fn similarity_score_total(similarity_scores: &HashMap<i32,i32>, total: &mut i32){
-    for (key, value) in similarity_scores{
-        *total += key*value;
+pub fn check_increase(line: &[i32], max_diff: i32) -> bool{
+    for i in (1..line.len()).rev(){
+        if line[i] - line[i-1] > max_diff || line[i] - line[i-1] <= 0{
+            return false;
+        }
     }
+    return true
 }
