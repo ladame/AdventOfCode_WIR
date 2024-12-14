@@ -16,7 +16,6 @@ pub fn read_reports(file_path: &str) -> Result<i32>{
 pub fn check_report(line: &[i32]) -> bool{
     let initial_index: usize = 0;
     let max_diff: i32 = 3;
-
     
     if line[initial_index] > line[initial_index+1]{
         return check_decrease(&line, max_diff);
@@ -28,18 +27,28 @@ pub fn check_report(line: &[i32]) -> bool{
 }
 
 pub fn check_decrease(line: &[i32], max_diff: i32) -> bool {
+    let max_error_tolerance: i8 = 1;
+    let mut error_tolerance: i8 = 0;
     for i in 0..(line.len()-1){
         if line[i] - line[i+1] > max_diff || line[i] - line[i+1] <= 0{
-            return false;
+            error_tolerance += 1;
+            if error_tolerance <= max_error_tolerance{
+                return false;
+            }
         }
     }
     return true
 }
 
 pub fn check_increase(line: &[i32], max_diff: i32) -> bool{
+    let max_error_tolerance: i8 = 1;
+    let mut error_tolerance: i8 = 0;
     for i in (1..line.len()).rev(){
         if line[i] - line[i-1] > max_diff || line[i] - line[i-1] <= 0{
-            return false;
+            error_tolerance += 1;
+            if error_tolerance <= max_error_tolerance{
+                return false;
+            }
         }
     }
     return true

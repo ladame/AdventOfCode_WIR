@@ -24,7 +24,7 @@ fn test_read_reports(){
     let content = "7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9";
     let (_dir_temp, file_path) = create_test_file(&content);
     let result = read_reports(&file_path).expect("Failed to read reports");
-    assert_eq!(result, 2);
+    assert_eq!(result, 4);
 }
 
 #[test]
@@ -32,15 +32,15 @@ fn test_read_reports_less_than_five_column(){
     let content = "7 6 4 2\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9";
     let (_dir_temp, file_path) = create_test_file(&content);
     let result = read_reports(&file_path).expect("Failed to read reports");
-    assert_eq!(result, 1);
+    assert_eq!(result, 2);
 }
 
 #[test]
 fn test_read_reports_more_than_five_column(){
     let content = "7 6 4 3 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9";
-    let (dir_temp, file_path) = create_test_file(&content);
+    let (_dir_temp, file_path) = create_test_file(&content);
     let result = read_reports(&file_path).expect("Failed to read reports");
-    assert_eq!(result, 1);
+    assert_eq!(result, 2);
 }
 
 #[test]
@@ -59,8 +59,16 @@ fn test_check_decrease_correct(){
 }
 
 #[test]
-fn test_check_decrease_incorrect(){
-    let report: [i32; 5] = [7, 9, 4, 2, 1];
+fn test_check_decrease_incorrect_one(){
+    let report: [i32; 5] = [7, 9, 8, 6, 5];
+    let max_diff: i32 = 3;
+    let result : bool = check_decrease(&report, max_diff);
+    assert_eq!(result,true);
+}
+
+#[test]
+fn test_check_decrease_incorrect_two(){
+    let report: [i32; 5] = [7, 9, 4, 1, 1];
     let max_diff: i32 = 3;
     let result : bool = check_decrease(&report, max_diff);
     assert_eq!(result,false);
@@ -79,15 +87,15 @@ fn test_check_decrease_no_diff(){
     let report: [i32; 5] = [10, 10, 7, 6, 5];
     let max_diff: i32 = 3;
     let result : bool = check_decrease(&report, max_diff);
-    assert_eq!(result,false);
+    assert_eq!(result,true);
 }
 
 #[test]
 fn test_check_decrease_no_diff_in_the_end(){
-    let report: [i32; 5] = [10, 9, 8, 4, 4];
+    let report: [i32; 5] = [10, 9, 8, 6, 6];
     let max_diff: i32 = 3;
     let result : bool = check_decrease(&report, max_diff);
-    assert_eq!(result,false);
+    assert_eq!(result,true);
 }
 
 #[test]
@@ -107,7 +115,15 @@ fn test_check_increase_correct(){
 }
 
 #[test]
-fn test_check_increase_incorrect(){
+fn test_check_increase_incorrect_one(){
+    let report: [i32; 5] = [5, 2, 4, 6, 7];
+    let max_diff: i32 = 3;
+    let result : bool = check_increase(&report, max_diff);
+    assert_eq!(result,true);
+}
+
+#[test]
+fn test_check_increase_incorrect_two(){
     let report: [i32; 5] = [5, 2, 4, 6, 7];
     let max_diff: i32 = 3;
     let result : bool = check_increase(&report, max_diff);
@@ -135,7 +151,7 @@ fn test_check_increase_no_diff_in_the_end(){
     let report: [i32; 5] = [1, 2, 4, 7, 7];
     let max_diff: i32 = 3;
     let result : bool = check_increase(&report, max_diff);
-    assert_eq!(result,false);
+    assert_eq!(result,true);
 }
 
 #[test]
