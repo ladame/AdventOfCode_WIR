@@ -13,43 +13,46 @@ pub fn read_reports(file_path: &str) -> Result<i32>{
     }
     Ok(valid_reports)
 }
-pub fn check_report(line: &[i32]) -> bool{
-    let initial_index: usize = 0;
+
+pub fn check_report(line: &Vec<i32>) -> bool{
     let max_diff: i32 = 3;
+
+    // Check increase or decrease
+    if check_consistency(line, max_diff){
+        return true;
+    }
+    // if not consistent, check for errors
+    return report_correction(line, max_diff)
     
-    if line[initial_index] > line[initial_index+1]{
-        return check_decrease(&line, max_diff);
-    }else if line[initial_index] < line[initial_index+1]{
-        return check_increase(&line, max_diff);
-    }else{
-        return false;
-    }
 }
 
-pub fn check_decrease(line: &[i32], max_diff: i32) -> bool {
-    let max_error_tolerance: i8 = 1;
-    let mut error_tolerance: i8 = 0;
+pub fn check_consistency(line: &Vec<i32>, max_diff: i32) -> bool{
+    let mut decrease: bool = true;
+    let mut increase: bool = true;
+
     for i in 0..(line.len()-1){
-        if line[i] - line[i+1] > max_diff || line[i] - line[i+1] <= 0{
-            error_tolerance += 1;
-            if error_tolerance <= max_error_tolerance{
-                return false;
-            }
+        if line[i] == line[i+1] || (line[i] - line[i+1]).abs() > max_diff{
+            return false;
+        }
+        if line[i] < line[i+1]{
+            decrease = false;
+        }else{
+            increase = false;
         }
     }
-    return true
+
+    decrease ||  increase
+    
 }
 
-pub fn check_increase(line: &[i32], max_diff: i32) -> bool{
-    let max_error_tolerance: i8 = 1;
-    let mut error_tolerance: i8 = 0;
-    for i in (1..line.len()).rev(){
-        if line[i] - line[i-1] > max_diff || line[i] - line[i-1] <= 0{
-            error_tolerance += 1;
-            if error_tolerance <= max_error_tolerance{
-                return false;
-            }
+pub fn report_correction(line: &Vec<i32>, max_diff: i32) -> bool{
+    let mut copied_line: Vec<i32> = line.clone();
+    for i in 0..line.len(){
+        copied_line.remove(i);
+        if check_consistency(&copied_line, max_diff){
+            return true;
         }
+        copied_line.insert(i, line[i]);
     }
-    return true
+    return false
 }
