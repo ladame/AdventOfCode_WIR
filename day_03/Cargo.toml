@@ -3,4 +3,9 @@ name = "day_03"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "day_03_lib"
+path = "src/lib.rs"
+
 [dependencies]
+regex = "1"
