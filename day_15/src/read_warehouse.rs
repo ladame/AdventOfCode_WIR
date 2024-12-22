@@ -25,6 +25,8 @@ pub fn read_warehouse(file_path: &str) -> Result<i32, io::Error> {
     // initialize data in the warehouse
     init_warehouse(file_path, &mut warehouse);
     // Move the box
+    warehouse.move_robot(&commands);
+    // Calculate the sum of the boxes
 
     Ok(sum_of_boxes)
 }
