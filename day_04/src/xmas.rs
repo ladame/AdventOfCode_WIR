@@ -8,19 +8,14 @@ pub struct Xmas {
     positions: Vec<((usize,usize), (usize,usize))>,
 }
 
-impl Xmas {
-    pub fn new(file_path: &str) -> Xmas {
-        let data = fs::read_to_string(file_path).unwrap();
-        let grid: Vec<Vec<char>> = data.lines().map(|line| line.chars().collect()).collect();
-
-        let mut xmas = Xmas {
-            width: grid[0].len() as usize,
-            height: grid.len() as usize,
-            matrix: grid.clone(),
-            total_xmas: 0,
-            positions: Vec::new(),
-        };
-        xmas
+impl Xmas{
+    pub fn new(matrix: Vec<Vec<char>>, total:i32) -> Xmas {
+        Xmas {
+            width: matrix[0].len() as i32,
+            height: matrix.len() as i32,
+            data: matrix,
+            total_xmas: total,
+        }
     }
 
     pub fn get_width(&self) -> usize {
