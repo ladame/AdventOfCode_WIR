@@ -64,17 +64,30 @@ impl Manual {
 
     fn sum_pages(rules: Vec<(usize, usize)>, updates: Vec<Vec<usize>>) -> usize {
         // UPDATE [[75, 47, 61, 53, 29], [97, 29, 53, 29, 61], ...
+        // Check that the update is not in the rules, so the inverse pair (r.1==x and r.2==y) shall always wrong
         return updates
             .iter()
-            .filter(|update| {
-                !update
+            .filter(|update| -> bool {
+                update
                     .iter()
                     .combinations(2)
-                    .map(|pair| (pair[0], pair[1]))
-                    .any(|(&x, &y)| rules.iter().any(|r| r.1 == x && r.0 == y))
+                    .map(|pair| {
+                        //println!("PAIR {:?}", pair);
+                        (pair[0], pair[1])
+                    })
+                    .all(|(&x, &y)| 
+                        rules.iter().any(|r|{ 
+                    //println!("r1:{} Y: {}, r0:{} X: {}", r.1, y, r.0, x);
+                    (r.1 == y && r.0 == x)
+                    })
+                )
             })
-            .map(|update| update[update.len() / 2])
-            .sum();
+            .map(|update| 
+                {
+                    //println!("UPDATE {:?}", update);
+                    update[update.len() / 2]
+                }
+        ).sum();
     }
 
     pub fn get_sum_pages(&self) -> usize {
