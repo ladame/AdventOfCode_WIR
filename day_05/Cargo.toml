@@ -3,4 +3,9 @@ name = "day_05"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "day_05_lib"
+path = "src/lib.rs"
+
 [dependencies]
+itertools = "0.13.0"
